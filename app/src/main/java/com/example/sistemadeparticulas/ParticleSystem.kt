@@ -1,5 +1,6 @@
 package com.example.sistemadeparticulas
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -15,7 +16,9 @@ import kotlinx.coroutines.delay
 import kotlin.math.max
 import kotlin.random.Random
 import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.drawscope.rotate
 import kotlin.math.PI
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.ln
 import kotlin.math.sqrt
@@ -31,15 +34,14 @@ class Particle(
     var rotationSpeed: Float = 0.0f,
     var opacity: Float = 1.0f,
     var confetti: Confetti,
-    )
-    {
-        fun draw(drawScope: DrawScope) {
-            when (confetti) {
-                is Confetti.Square -> drawScope.drawSquare(this)
-                is Confetti.Streamer -> drawScope.drawStreamer(this)
-            }
+) {
+    fun draw(drawScope: DrawScope) {
+        when (confetti) {
+            is Confetti.Square -> drawScope.drawSquare(this)
+            is Confetti.Streamer -> drawScope.drawStreamer(this)
         }
     }
+}
 
 
 class ParticleSystem(seed: Int, val modifiers: List<ParticleModifier>) {
@@ -160,23 +162,30 @@ enum class ConfettiColor(val color: Color) {
 // Vista para renderizar un cuadrado
 fun DrawScope.drawSquare(particle: Particle) {
     val square = particle.confetti as Confetti.Square
+    rotate(particle.rotation, pivot = Offset(particle.x, particle.y)) {
         drawRect(
             color = square.color,
             size = androidx.compose.ui.geometry.Size(20f * particle.scale, 20f * particle.scale),
             topLeft = Offset(particle.x, particle.y)
         )
+    }
 }
 
 // Vista para renderizar una serpentina
 fun DrawScope.drawStreamer(particle: Particle) {
     val streamer = particle.confetti as Confetti.Streamer
+    val angleRadians = atan2(particle.dx, -particle.dy)  // ángulo en radianes
+    val angleDegrees = angleRadians * (180f / PI).toFloat()  // convertir a grados manualmente
+
+    rotate(angleDegrees,
+        pivot = Offset(particle.x, particle.y)) {
         drawLine(
             color = streamer.color,
             start = Offset(particle.x, particle.y),
             end = Offset(particle.x, particle.y + streamer.length * particle.scale),
             strokeWidth = 4.dp.toPx()
         )
-
+    }
 }
 
 fun generateRandomParticle(random: Random): Particle {
@@ -194,7 +203,7 @@ fun generateRandomParticle(random: Random): Particle {
             lifeTime = random.nextFloat() * 4f + 1f,
             scale = random.nextFloat() * 0.5f + 0.5f,
             rotation = random.nextFloat() * 360f,
-            rotationSpeed = random.nextFloat() * 10f - 5f,
+            rotationSpeed = random.nextFloat() * 200f - 5f,
             opacity = random.nextFloat() * 0.5f + 0.5f,
             confetti = square
         )
@@ -209,7 +218,7 @@ fun generateRandomParticle(random: Random): Particle {
             lifeTime = random.nextFloat() * 4f + 1f,
             scale = random.nextFloat() * 2f + 1f,
             rotation = random.nextFloat() * 360f,
-            rotationSpeed = random.nextFloat() * 10f - 5f,
+            rotationSpeed = random.nextFloat() * 200f - 5f,
             opacity = random.nextFloat() * 0.5f + 0.5f,
             confetti = streamer
         )
@@ -242,7 +251,12 @@ fun generateStreamer(random: Random): Confetti.Streamer {
 
     val rotationOffset = random.nextFloat()
 
-    return Confetti.Streamer(color = color, length = length, rotations = rotations, rotationOffset = rotationOffset)
+    return Confetti.Streamer(
+        color = color,
+        length = length,
+        rotations = rotations,
+        rotationOffset = rotationOffset
+    )
 }
 
 fun randomGaussian(mean: Double = 0.0, deviation: Double = 1.0): Double {
@@ -263,7 +277,8 @@ fun randomGaussian(mean: Double = 0.0, deviation: Double = 1.0): Double {
 fun Particles() {
     Box(modifier = Modifier.fillMaxSize()) {
         val particleSystem = remember {
-            ParticleSystem(5,
+            ParticleSystem(
+                5,
                 listOf(
                     GravityModifier(9.8f),
                     DragModifier(0.98f)
@@ -278,10 +293,10 @@ fun Particles() {
         }
 
         LaunchedEffect(Unit) {
-            val frameTime = 2*16L // aproximadamente  FPS
+            val frameTime = 2 * 16L // aproximadamente  FPS
             while (true) {
                 val deltaTime = frameTime / 1000f // convertir ms a segundos
-                particleSystem.generateRandomParticles(5) { generateRandomParticle(particleSystem.random) }
+                particleSystem.generateRandomParticles(2) { generateRandomParticle(particleSystem.random) }
                 particleSystem.computeNextGeneration(deltaTime)
                 delay(frameTime)
             }
