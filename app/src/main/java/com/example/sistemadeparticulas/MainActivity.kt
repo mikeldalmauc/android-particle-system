@@ -196,7 +196,7 @@ fun ParticlesBox(innerPadding: PaddingValues) {
 
 /**
  * https://github.com/airbnb/lottie/blob/master/android-compose.md
- *
+ *https://medium.com/@thecodingmontana/implement-a-lottie-animation-in-the-android-app-with-jetpack-compose-356da0ccc145
  */
 @Composable
 fun LottieLego(innerPadding: PaddingValues) {
