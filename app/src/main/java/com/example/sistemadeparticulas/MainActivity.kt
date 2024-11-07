@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -29,16 +29,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.sistemadeparticulas.ui.theme.SistemaDeParticulasTheme
 import kotlinx.coroutines.launch
 
@@ -55,7 +58,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavigationDrawer(){
+fun NavigationDrawer() {
     var item = remember { mutableStateOf("Character") }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -63,44 +66,39 @@ fun NavigationDrawer(){
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                modifier = Modifier.fillMaxWidth(0.5f)
+            ) {
                 Text("Ejemplos", modifier = Modifier.padding(16.dp))
                 HorizontalDivider()
-                NavigationDrawerItem(
-                    label = { Text(text = "Particles") },
-                    selected = false,
-                    onClick = {
-                        item.value = "Particles"
-                    }
-                )
-                NavigationDrawerItem(
-                    label = { Text(text = "Character") },
-                    selected = false,
-                    onClick = {
-                        item.value = "Character"
-                    }
-                )
-                NavigationDrawerItem(
-                    label = { Text(text = "Zombi") },
-                    selected = false,
-                    onClick = {
-                        item.value = "Zombi"
-                    }
-                )
-                NavigationDrawerItem(
-                    label = { Text(text = "Zombis") },
-                    selected = false,
-                    onClick = {
-                        item.value = "Zombis"
-                    }
-                )
+
+                listOf(
+                    "Particles",
+                    "Character",
+                    "Zombi",
+                    "Zombis",
+                    "lottie_lego",
+                    "SinusoidalBallAnimation"
+
+                ).map { name ->
+                    NavigationDrawerItem(
+                        label = { Text(text = name) },
+                        selected = item.value == name,
+                        onClick = {
+                            item.value = name
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                    )
+                }
             }
         },
     ) {
         Scaffold(
             floatingActionButton = {
                 ExtendedFloatingActionButton(
-                    text = { Text("Browse Examples") },
+                    text = { Text("Otros ejemplos") },
                     icon = { Icon(Icons.Filled.Search, contentDescription = "") },
                     onClick = {
                         scope.launch {
@@ -113,72 +111,131 @@ fun NavigationDrawer(){
             }
         ) { contentPadding ->
 
-            when(item.value){
+            when (item.value) {
                 "Particles" -> ParticlesBox(PaddingValues(16.dp))
                 "Character" -> {
                     val char = createCharacter()
                     AnimationBox(PaddingValues(16.dp), char) { CharacterAnimation(char) }
                 }
+
                 "Zombi" -> {
                     val char = createZombi()
                     AnimationBox(PaddingValues(16.dp), char) { ZombiAnimation(char) }
                 }
+
                 "Zombis" -> {
-                    Box(contentAlignment = Alignment.Center,
-                        modifier = Modifier.padding(contentPadding)
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(contentPadding)
                             .fillMaxSize()
                     ) {
-                        ZombiAnimation(createZombiRandom(), modifier = Modifier.size(96.dp, 96.dp).offset(0.dp, 0.dp))
-                        ZombiAnimation(createZombiRandom(), modifier = Modifier.size(96.dp, 96.dp).offset(45.dp, 10.dp))
-                        ZombiAnimation(createZombiRandom(), modifier = Modifier.size(96.dp, 96.dp).offset(59.dp, 5.dp))
-                        ZombiAnimation(createZombiRandom(), modifier = Modifier.size(96.dp, 96.dp).offset(23.dp, 20.dp))
-                        ZombiAnimation(createZombiRandom(), modifier = Modifier.size(96.dp, 96.dp).offset(-34.dp, 0.dp))
-                        ZombiAnimation(createZombiRandom(), modifier = Modifier.size(96.dp, 96.dp).offset(-100.dp, -5.dp))
-                        ZombiAnimation(createZombiRandom(), modifier = Modifier.size(96.dp, 96.dp).offset(-125.dp, 0.dp))
+                        ZombiAnimation(
+                            createZombiRandom(),
+                            modifier = Modifier
+                                .size(96.dp, 96.dp)
+                                .offset(0.dp, 0.dp)
+                        )
+                        ZombiAnimation(
+                            createZombiRandom(),
+                            modifier = Modifier
+                                .size(96.dp, 96.dp)
+                                .offset(45.dp, 10.dp)
+                        )
+                        ZombiAnimation(
+                            createZombiRandom(),
+                            modifier = Modifier
+                                .size(96.dp, 96.dp)
+                                .offset(59.dp, 5.dp)
+                        )
+                        ZombiAnimation(
+                            createZombiRandom(),
+                            modifier = Modifier
+                                .size(96.dp, 96.dp)
+                                .offset(23.dp, 20.dp)
+                        )
+                        ZombiAnimation(
+                            createZombiRandom(),
+                            modifier = Modifier
+                                .size(96.dp, 96.dp)
+                                .offset(-34.dp, 0.dp)
+                        )
+                        ZombiAnimation(
+                            createZombiRandom(),
+                            modifier = Modifier
+                                .size(96.dp, 96.dp)
+                                .offset(-100.dp, -5.dp)
+                        )
+                        ZombiAnimation(
+                            createZombiRandom(),
+                            modifier = Modifier
+                                .size(96.dp, 96.dp)
+                                .offset(-125.dp, 0.dp)
+                        )
 
                     }
                 }
-                else -> ParticlesBox(PaddingValues(16.dp))
+                "lottie_lego" -> {
+                    LottieLego(contentPadding)
+                }
+                "SinusoidalBallAnimation" -> {
+                    SinusoidalBallAnimation()
+                }
+                else -> LottieLego(contentPadding)
             }
         }
     }
 }
 
 @Composable
-fun ParticlesBox(innerPadding: PaddingValues){
-    Box(modifier = Modifier.padding(innerPadding)){
+fun ParticlesBox(innerPadding: PaddingValues) {
+    Box(modifier = Modifier.padding(innerPadding)) {
         Particles()
     }
 }
 
-
+/**
+ * https://github.com/airbnb/lottie/blob/master/android-compose.md
+ *
+ */
 @Composable
-@Preview
-fun AnimationPreview() {
-    SistemaDeParticulasTheme {
-        val char = createCharacter()
-        AnimationBox(PaddingValues(16.dp), char) { CharacterAnimation(char) }
+fun LottieLego(innerPadding: PaddingValues) {
+    Box(modifier = Modifier.padding(innerPadding)) {
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_lego))
+        val progress by animateLottieCompositionAsState(
+            composition,
+            iterations = LottieConstants.IterateForever,
+        )
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+        )
     }
 }
 
-
 @Composable
-fun AnimationBox(innerPadding: PaddingValues, viewModel: CharacterViewModel,  view: @Composable () -> Unit){
+fun AnimationBox(
+    innerPadding: PaddingValues,
+    viewModel: CharacterViewModel,
+    view: @Composable () -> Unit
+) {
 
-    Box(modifier = Modifier
-        .padding(innerPadding)
-        .fillMaxSize(),
+    Box(
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
 
             // Invoca la funcón de vista correspondiente, hay varias
             view.invoke()
 
-            Column(verticalArrangement = Arrangement.SpaceEvenly,
+            Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .padding(16.dp)
                     .border(1.dp, color = Color.Black)
@@ -189,7 +246,8 @@ fun AnimationBox(innerPadding: PaddingValues, viewModel: CharacterViewModel,  vi
                         .padding(horizontal = 3.dp, vertical = 0.dp)
                         .clickable(onClick = {
                             viewModel.changeAnimation(name)
-                        }))
+                        })
+                    )
                 }
             }
         }
