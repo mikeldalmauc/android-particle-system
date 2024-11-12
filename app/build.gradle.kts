@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.sistemadeparticulas"
+    namespace = "com.example.animations"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.sistemadeparticulas"
+        applicationId = "com.example.animations"
         minSdk = 27
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.example.sistemadeparticulas
+package com.example.animations
 
 import org.junit.Test
 

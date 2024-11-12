@@ -1,5 +1,6 @@
-package com.example.sistemadeparticulas
+package com.example.animations
 
+import BouncingBallAnimation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -42,7 +43,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.sistemadeparticulas.ui.theme.SistemaDeParticulasTheme
+import com.example.animations.ui.theme.AnimationsTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SistemaDeParticulasTheme {
+            AnimationsTheme  {
                 NavigationDrawer()
             }
         }
@@ -59,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationDrawer() {
-    var item = remember { mutableStateOf("Character") }
+    val item = remember { mutableStateOf("Character") }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -75,10 +76,12 @@ fun NavigationDrawer() {
                 listOf(
                     "Particles",
                     "Character",
-                    "Zombi",
-                    "Zombis",
+                    "Zombie",
+                    "Zombies",
                     "lottie_lego",
-                    "SinusoidalBallAnimation"
+                    "SinusoidalBallAnimation",
+                    "BouncingBallAnimation",
+                    "Watch"
 
                 ).map { name ->
                     NavigationDrawerItem(
@@ -112,75 +115,34 @@ fun NavigationDrawer() {
         ) { contentPadding ->
 
             when (item.value) {
-                "Particles" -> ParticlesBox(PaddingValues(16.dp))
+                "Particles" ->
+                    ParticlesBox(PaddingValues(16.dp))
+
                 "Character" -> {
                     val char = createCharacter()
                     AnimationBox(PaddingValues(16.dp), char) { CharacterAnimation(char) }
                 }
 
-                "Zombi" -> {
+                "Zombie" -> {
                     val char = createZombi()
                     AnimationBox(PaddingValues(16.dp), char) { ZombiAnimation(char) }
                 }
 
-                "Zombis" -> {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .padding(contentPadding)
-                            .fillMaxSize()
-                    ) {
-                        ZombiAnimation(
-                            createZombiRandom(),
-                            modifier = Modifier
-                                .size(96.dp, 96.dp)
-                                .offset(0.dp, 0.dp)
-                        )
-                        ZombiAnimation(
-                            createZombiRandom(),
-                            modifier = Modifier
-                                .size(96.dp, 96.dp)
-                                .offset(45.dp, 10.dp)
-                        )
-                        ZombiAnimation(
-                            createZombiRandom(),
-                            modifier = Modifier
-                                .size(96.dp, 96.dp)
-                                .offset(59.dp, 5.dp)
-                        )
-                        ZombiAnimation(
-                            createZombiRandom(),
-                            modifier = Modifier
-                                .size(96.dp, 96.dp)
-                                .offset(23.dp, 20.dp)
-                        )
-                        ZombiAnimation(
-                            createZombiRandom(),
-                            modifier = Modifier
-                                .size(96.dp, 96.dp)
-                                .offset(-34.dp, 0.dp)
-                        )
-                        ZombiAnimation(
-                            createZombiRandom(),
-                            modifier = Modifier
-                                .size(96.dp, 96.dp)
-                                .offset(-100.dp, -5.dp)
-                        )
-                        ZombiAnimation(
-                            createZombiRandom(),
-                            modifier = Modifier
-                                .size(96.dp, 96.dp)
-                                .offset(-125.dp, 0.dp)
-                        )
+                "Zombies" ->
+                    Zombies(PaddingValues(16.dp))
 
-                    }
-                }
-                "lottie_lego" -> {
+                "lottie_lego" ->
                     LottieLego(contentPadding)
-                }
-                "SinusoidalBallAnimation" -> {
+
+                "SinusoidalBallAnimation" ->
                     SinusoidalBallAnimation()
-                }
+
+                "BouncingBallAnimation" ->
+                    BouncingBallAnimation()
+
+                "Watch" ->
+                    DigitalClock()
+
                 else -> LottieLego(contentPadding)
             }
         }
@@ -242,15 +204,69 @@ fun AnimationBox(
             )
             {
                 viewModel.animationNames().map { name ->
-                    Text(name, modifier = Modifier
-                        .padding(horizontal = 3.dp, vertical = 0.dp)
-                        .clickable(onClick = {
-                            viewModel.changeAnimation(name)
-                        })
+                    Text(
+                        name, modifier = Modifier
+                            .padding(horizontal = 3.dp, vertical = 0.dp)
+                            .clickable(onClick = {
+                                viewModel.changeAnimation(name)
+                            })
                     )
                 }
             }
         }
 
+    }
+}
+
+@Composable
+fun Zombies(contentPadding: PaddingValues) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .padding(contentPadding)
+            .fillMaxSize()
+    ) {
+        ZombiAnimation(
+            createZombiRandom(),
+            modifier = Modifier
+                .size(96.dp, 96.dp)
+                .offset(0.dp, 0.dp)
+        )
+        ZombiAnimation(
+            createZombiRandom(),
+            modifier = Modifier
+                .size(96.dp, 96.dp)
+                .offset(45.dp, 10.dp)
+        )
+        ZombiAnimation(
+            createZombiRandom(),
+            modifier = Modifier
+                .size(96.dp, 96.dp)
+                .offset(59.dp, 5.dp)
+        )
+        ZombiAnimation(
+            createZombiRandom(),
+            modifier = Modifier
+                .size(96.dp, 96.dp)
+                .offset(23.dp, 20.dp)
+        )
+        ZombiAnimation(
+            createZombiRandom(),
+            modifier = Modifier
+                .size(96.dp, 96.dp)
+                .offset(-34.dp, 0.dp)
+        )
+        ZombiAnimation(
+            createZombiRandom(),
+            modifier = Modifier
+                .size(96.dp, 96.dp)
+                .offset(-100.dp, -5.dp)
+        )
+        ZombiAnimation(
+            createZombiRandom(),
+            modifier = Modifier
+                .size(96.dp, 96.dp)
+                .offset(-125.dp, 0.dp)
+        )
     }
 }

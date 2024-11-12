@@ -1,4 +1,4 @@
-package com.example.sistemadeparticulas
+package com.example.animations
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
@@ -24,7 +24,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-class CharacterViewModel(val animations: Map<String, Pair<Int, Int>>, startAnimation: String = "idle") : ViewModel() {
+class CharacterViewModel(
+    val animations: Map<String, Pair<Int, Int>>,
+    startAnimation: String = "idle"
+) : ViewModel() {
 
     // Estado actual de la animación
     private val _currentAnimation = MutableLiveData(startAnimation)
@@ -34,7 +37,7 @@ class CharacterViewModel(val animations: Map<String, Pair<Int, Int>>, startAnima
     val nextAnimation = _nextAnimation.asStateFlow()
 
     private val _currentFrame = MutableLiveData<Int>(0)
-    val currentFrame : LiveData<Int> = _currentFrame
+    val currentFrame: LiveData<Int> = _currentFrame
 
     private val _isAnimationComplete = MutableStateFlow(true)
     val isAnimationComplete = _isAnimationComplete.asStateFlow()
@@ -45,9 +48,9 @@ class CharacterViewModel(val animations: Map<String, Pair<Int, Int>>, startAnima
         characterLoop() // Iniciar la primera animación
     }
 
-    private fun characterLoop(){
+    private fun characterLoop() {
 
-        if(_isAnimationComplete.value){
+        if (_isAnimationComplete.value) {
             _isAnimationComplete.value = false
             _currentAnimation.value = _nextAnimation.value
 
@@ -62,7 +65,7 @@ class CharacterViewModel(val animations: Map<String, Pair<Int, Int>>, startAnima
     }
 
     // Función para reproducir la animación actual
-    private fun playAnimation() : Job {
+    private fun playAnimation(): Job {
         return viewModelScope.launch {
             val animation = animations[_currentAnimation.value] ?: return@launch
             val (_, totalFrames) = animation
@@ -101,9 +104,10 @@ var characterAnimations = mapOf(
     "jump" to (5 to 8),
     "dissolve" to (6 to 3),
     "die" to (7 to 8),
-    "slash" to (8 to 8))
+    "slash" to (8 to 8)
+)
 
-fun createCharacter() : CharacterViewModel {
+fun createCharacter(): CharacterViewModel {
     return CharacterViewModel(characterAnimations)
 }
 
@@ -117,13 +121,14 @@ var zombieAnimations = mapOf(
     "walk" to (6 to 10),
     "dead" to (7 to 5),
     "hurt" to (8 to 5),
-    "eating" to (9 to 11))
+    "eating" to (9 to 11)
+)
 
-fun createZombi() : CharacterViewModel {
+fun createZombi(): CharacterViewModel {
     return CharacterViewModel(zombieAnimations)
 }
 
-fun createZombiRandom() : CharacterViewModel {
+fun createZombiRandom(): CharacterViewModel {
     return CharacterViewModel(
         zombieAnimations,
         zombieAnimations.keys.toList()[Random.nextInt(0, 9)]
@@ -139,7 +144,8 @@ fun CharacterAnimation(characterController: CharacterViewModel) {
 
     Log.d("SpriteAnimations", "currentFrame: $currentFrame")
 
-    Box(modifier = Modifier.size(61.dp, 63.dp)
+    Box(
+        modifier = Modifier.size(61.dp, 63.dp)
     ) {
         SpriteAnimationFromSheet(
             spriteSheet = spriteSheet,
@@ -154,12 +160,15 @@ fun CharacterAnimation(characterController: CharacterViewModel) {
 }
 
 @Composable
-fun ZombiAnimation(characterController: CharacterViewModel, modifier: Modifier = Modifier.size(96.dp, 96.dp)) {
+fun ZombiAnimation(
+    characterController: CharacterViewModel,
+    modifier: Modifier = Modifier.size(96.dp, 96.dp)
+) {
 
     val currentFrame by characterController.currentFrame.observeAsState(0)
     val currentAnimation by characterController.currentAnimationName.observeAsState("idle")
 
-    val spriteSheet = when(currentAnimation){
+    val spriteSheet = when (currentAnimation) {
         "ide" -> ImageBitmap.imageResource(R.drawable.zombi_idle)
         "attack_1" -> ImageBitmap.imageResource(R.drawable.zombi_attack_1)
         "attack_2" -> ImageBitmap.imageResource(R.drawable.zombi_attack_2)
@@ -173,7 +182,8 @@ fun ZombiAnimation(characterController: CharacterViewModel, modifier: Modifier =
         else -> ImageBitmap.imageResource(R.drawable.zombi_idle)
     }
 
-    Box(modifier = modifier
+    Box(
+        modifier = modifier
     ) {
         SpriteAnimationFromSheet(
             spriteSheet = spriteSheet,
@@ -204,7 +214,7 @@ fun ZombiAnimation(characterController: CharacterViewModel, modifier: Modifier =
 @Composable
 fun SpriteAnimationFromSheet(
     spriteSheet: ImageBitmap,
-    size : Int,
+    size: Int,
     frameWidth: Int,
     frameHeight: Int,
     row: Int,
@@ -213,19 +223,19 @@ fun SpriteAnimationFromSheet(
     canvasY: Int = 64,
     gap: Int = 0,
     dstOffset: IntOffset = IntOffset(0, 0),
-    yCorrection : Int = 0,
-    xCorrection : Int = 0
+    yCorrection: Int = 0,
+    xCorrection: Int = 0
 ) {
     val srcOffsetX = currentFrame * (frameWidth + gap) + xCorrection
     val srcOffsetY = row * (frameHeight + gap) + yCorrection
 
-    Canvas(modifier = Modifier.size(canvasX.dp,canvasY.dp)) {
+    Canvas(modifier = Modifier.size(canvasX.dp, canvasY.dp)) {
         drawImage(
             image = spriteSheet,
             srcOffset = IntOffset(srcOffsetX, srcOffsetY),
             srcSize = IntSize(frameWidth, frameHeight),
             dstOffset = dstOffset,
-            dstSize = IntSize(frameWidth, frameHeight) *size
+            dstSize = IntSize(frameWidth, frameHeight) * size
         )
     }
 }

@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Sistema de particulas"
+rootProject.name = "Animations"
 include(":app")
