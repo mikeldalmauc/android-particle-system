@@ -141,7 +141,7 @@ fun NavigationDrawer() {
                     BouncingBallAnimation()
 
                 "Watch" ->
-                    DigitalClock()
+                    Watch()
 
                 else -> LottieLego(contentPadding)
             }
