@@ -290,8 +290,8 @@ fun FelicidadesConfeti(segundos: Float) {
     )
 
     // Secuencia de animación sincronizada al llegar el segundero a 0 o 30
-    LaunchedEffect(segundos) {
-        if (segundos == 0f || segundos == 30f) {
+    LaunchedEffect(segundos == 0f || segundos == 30f || segundos == 15f || segundos == 45f) {
+        //if (segundos == 0f || segundos == 30f || segundos == 15f || segundos == 45f) {
             showFelicidades = true // Activa la animación de confeti y el texto
 
             // Anima el tamaño del texto "Felicidades" para que aparezca
@@ -304,15 +304,8 @@ fun FelicidadesConfeti(segundos: Float) {
             // Mantiene el texto visible durante 2 segundos
             delay(2000L)
 
-            // Anima el tamaño del texto para que desaparezca
-            textSize.animateTo(
-                targetValue = 0f,
-                animationSpec = tween(durationMillis = 1000)
-            )
-
-            // Oculta la animación y el texto al finalizar la secuencia
             showFelicidades = false
-        }
+        //}
     }
 
     Box(
