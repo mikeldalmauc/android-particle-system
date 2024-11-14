@@ -81,7 +81,8 @@ fun NavigationDrawer() {
                     "lottie_lego",
                     "SinusoidalBallAnimation",
                     "BouncingBallAnimation",
-                    "Watch"
+                    "Watch",
+                    "Confetti"
 
                 ).map { name ->
                     NavigationDrawerItem(
@@ -142,6 +143,9 @@ fun NavigationDrawer() {
 
                 "Watch" ->
                     DigitalClock()
+
+                "Confetti" ->
+                    Confeti()
 
                 else -> LottieLego(contentPadding)
             }

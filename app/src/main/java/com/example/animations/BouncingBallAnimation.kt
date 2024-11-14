@@ -25,14 +25,14 @@ fun BouncingBallAnimation() {
                 durationMillis = 2000
 
                 // Movimiento hacia arriba
-                800f at 0 with FastOutSlowInEasing // Comienza en el suelo
-                200f at 900 with FastOutSlowInEasing // Llega arriba y se detiene
+                800f at 0 using FastOutSlowInEasing // Comienza en el suelo
+                200f at 900 using FastOutSlowInEasing // Llega arriba y se detiene
 
                 // Movimiento hacia abajo
-                800f at 1600 with FastOutLinearInEasing // Baja rápidamente al suelo
+                800f at 1600 using FastOutLinearInEasing // Baja rápidamente al suelo
 
                 // Rebote en el suelo
-                750f at 1800 with LinearEasing // Rebota un poco
+                750f at 1800 using LinearEasing // Rebota un poco
                 800f at 2000 // Vuelve al suelo
             }
         ), label = ""
