@@ -142,7 +142,7 @@ fun NavigationDrawer() {
                     BouncingBallAnimation()
 
                 "Watch" ->
-                    DigitalClock()
+                    Watch()
 
                 "Confetti" ->
                     Confeti()
