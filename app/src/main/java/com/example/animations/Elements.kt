@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -43,14 +44,13 @@ fun ElementoAnimado() {
                 }
                 R.raw.planta -> item {
                     modifier = modifier
-                        .width(280.dp)
-                        .height(280.dp)
+                        .scale(1.4f)
 
                     LottieInfinit(it, modifier)
                 }
                 R.raw.aire -> item {
                     modifier = modifier
-                        .padding(32.dp)
+                        .padding(20.dp)
 
                     LottieInfinit(it, modifier)
                 }
