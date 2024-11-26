@@ -77,7 +77,8 @@ fun NavigationDrawer() {
                     "BouncingBallAnimation",
                     "Watch",
                     "Confetti",
-                    "Elementos"
+                    "Elementos",
+                    "RamaError"
 
                 ).map { name ->
                     NavigationDrawerItem(
@@ -145,7 +146,7 @@ fun NavigationDrawer() {
                 "Elementos" ->
                     ElementoAnimado()
 
-                else -> LottieLego(contentPadding)
+                else -> RamaError(contentPadding)
             }
         }
     }
