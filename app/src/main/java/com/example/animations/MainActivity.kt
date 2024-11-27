@@ -33,7 +33,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,11 +45,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.animations.ui.theme.AnimationsTheme
 import kotlinx.coroutines.launch
 
@@ -91,7 +85,9 @@ fun NavigationDrawer() {
                     "SinusoidalBallAnimation",
                     "BouncingBallAnimation",
                     "Watch",
-                    "Confetti"
+                    "Confetti",
+                    "Elementos",
+                    "RamaError"
 
                 ).map { name ->
                     NavigationDrawerItem(label = { Text(text = name) },
@@ -143,7 +139,10 @@ fun NavigationDrawer() {
 
                 "Confetti" -> Confeti()
 
-                else -> LottieLego(contentPadding)
+                "Elementos" ->
+                    ElementoAnimado()
+
+                else -> RamaError(contentPadding)
             }
         }
     }
@@ -153,25 +152,6 @@ fun NavigationDrawer() {
 fun ParticlesBox(innerPadding: PaddingValues) {
     Box(modifier = Modifier.padding(innerPadding)) {
         Particles()
-    }
-}
-
-/**
- * https://github.com/airbnb/lottie/blob/master/android-compose.md
- *https://medium.com/@thecodingmontana/implement-a-lottie-animation-in-the-android-app-with-jetpack-compose-356da0ccc145
- */
-@Composable
-fun LottieLego(innerPadding: PaddingValues) {
-    Box(modifier = Modifier.padding(innerPadding)) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_lego))
-        val progress by animateLottieCompositionAsState(
-            composition,
-            iterations = LottieConstants.IterateForever,
-        )
-        LottieAnimation(
-            composition = composition,
-            progress = { progress },
-        )
     }
 }
 

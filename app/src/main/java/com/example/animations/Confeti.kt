@@ -3,11 +3,8 @@ package com.example.animations
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -32,7 +30,6 @@ import kotlinx.coroutines.delay
 fun ConfettiPreview(){
     Confeti()
 }
-
 
 @Composable
 fun Confeti(){
@@ -66,22 +63,20 @@ fun Confeti(){
         }) {
             Text("¡Haz clic para felicitar!")
         }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Composición de Lottie y texto de felicitaciones
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.size(400.dp)
-        ) {
-
-            // Animación de Lottie con la reproducción del confeti
-            LottieAnimation(
-                composition = composition,
-                progress = { progress },
-                modifier = Modifier.fillMaxSize()
-            )
-        }
     }
 
+    // Composición de Lottie y texto de felicitaciones
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        // Animación de Lottie con la reproducción del confeti
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+    }
 }
