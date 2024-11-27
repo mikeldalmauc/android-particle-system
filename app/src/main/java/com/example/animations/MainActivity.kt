@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -36,7 +39,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -49,9 +57,10 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
-            AnimationsTheme  {
+            AnimationsTheme {
                 NavigationDrawer()
             }
         }
@@ -85,39 +94,32 @@ fun NavigationDrawer() {
                     "Confetti"
 
                 ).map { name ->
-                    NavigationDrawerItem(
-                        label = { Text(text = name) },
+                    NavigationDrawerItem(label = { Text(text = name) },
                         selected = item.value == name,
                         onClick = {
                             item.value = name
                             scope.launch {
                                 drawerState.close()
                             }
-                        }
-                    )
+                        })
                 }
             }
         },
     ) {
-        Scaffold(
-            floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    text = { Text("Otros ejemplos") },
-                    icon = { Icon(Icons.Filled.Search, contentDescription = "") },
-                    onClick = {
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
-                            }
+        Scaffold(floatingActionButton = {
+            ExtendedFloatingActionButton(text = { Text("Otros ejemplos") },
+                icon = { Icon(Icons.Filled.Search, contentDescription = "") },
+                onClick = {
+                    scope.launch {
+                        drawerState.apply {
+                            if (isClosed) open() else close()
                         }
                     }
-                )
-            }
-        ) { contentPadding ->
+                })
+        }) { contentPadding ->
 
             when (item.value) {
-                "Particles" ->
-                    ParticlesBox(PaddingValues(16.dp))
+                "Particles" -> ParticlesBox(PaddingValues(16.dp))
 
                 "Character" -> {
                     val char = createCharacter()
@@ -129,23 +131,17 @@ fun NavigationDrawer() {
                     AnimationBox(PaddingValues(16.dp), char) { ZombiAnimation(char) }
                 }
 
-                "Zombies" ->
-                    Zombies(PaddingValues(16.dp))
+                "Zombies" -> Zombies(PaddingValues(16.dp))
 
-                "lottie_lego" ->
-                    LottieLego(contentPadding)
+                "lottie_lego" -> LottieLego(contentPadding)
 
-                "SinusoidalBallAnimation" ->
-                    SinusoidalBallAnimation()
+                "SinusoidalBallAnimation" -> SinusoidalBallAnimation()
 
-                "BouncingBallAnimation" ->
-                    BouncingBallAnimation()
+                "BouncingBallAnimation" -> BouncingBallAnimation()
 
-                "Watch" ->
-                    Watch()
+                "Watch" -> Watch()
 
-                "Confetti" ->
-                    Confeti()
+                "Confetti" -> Confeti()
 
                 else -> LottieLego(contentPadding)
             }
@@ -180,21 +176,40 @@ fun LottieLego(innerPadding: PaddingValues) {
 }
 
 @Composable
+@Preview
+fun AnimationBoxPrev() {
+    AnimationBox(PaddingValues(16.dp), createCharacter()) { CharacterAnimation(createCharacter()) }
+}
+
+@Composable
 fun AnimationBox(
-    innerPadding: PaddingValues,
-    viewModel: CharacterViewModel,
-    view: @Composable () -> Unit
+    innerPadding: PaddingValues, viewModel: CharacterViewModel, view: @Composable () -> Unit
 ) {
 
     Box(
         modifier = Modifier
-            .padding(innerPadding)
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
+            .background(
+                Brush.linearGradient(
+                    colors = listOf(Color(0x8D9DB3FF    ), Color(0xFFFFFFFF)),
+                    start = Offset(0.5f, 0f),
+                    end = Offset(0.5f, 2000f)
+                )
+            )
+        , contentAlignment = Alignment.Center
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.bg),
+            contentDescription = "bg",
+            modifier = Modifier.fillMaxHeight(0.6f),
+            contentScale = ContentScale.Crop
+        )
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .offset(0.dp, 210.dp)
         ) {
 
             // Invoca la funcón de vista correspondiente, hay varias
@@ -205,11 +220,12 @@ fun AnimationBox(
                 modifier = Modifier
                     .padding(16.dp)
                     .border(1.dp, color = Color.Black)
-            )
-            {
+                    .background(Color.White)
+            ) {
                 viewModel.animationNames().map { name ->
                     Text(
-                        name, modifier = Modifier
+                        name,
+                        modifier = Modifier
                             .padding(horizontal = 3.dp, vertical = 0.dp)
                             .clickable(onClick = {
                                 viewModel.changeAnimation(name)
@@ -231,44 +247,37 @@ fun Zombies(contentPadding: PaddingValues) {
             .fillMaxSize()
     ) {
         ZombiAnimation(
-            createZombiRandom(),
-            modifier = Modifier
+            createZombiRandom(), modifier = Modifier
                 .size(96.dp, 96.dp)
                 .offset(0.dp, 0.dp)
         )
         ZombiAnimation(
-            createZombiRandom(),
-            modifier = Modifier
+            createZombiRandom(), modifier = Modifier
                 .size(96.dp, 96.dp)
                 .offset(45.dp, 10.dp)
         )
         ZombiAnimation(
-            createZombiRandom(),
-            modifier = Modifier
+            createZombiRandom(), modifier = Modifier
                 .size(96.dp, 96.dp)
                 .offset(59.dp, 5.dp)
         )
         ZombiAnimation(
-            createZombiRandom(),
-            modifier = Modifier
+            createZombiRandom(), modifier = Modifier
                 .size(96.dp, 96.dp)
                 .offset(23.dp, 20.dp)
         )
         ZombiAnimation(
-            createZombiRandom(),
-            modifier = Modifier
+            createZombiRandom(), modifier = Modifier
                 .size(96.dp, 96.dp)
                 .offset(-34.dp, 0.dp)
         )
         ZombiAnimation(
-            createZombiRandom(),
-            modifier = Modifier
+            createZombiRandom(), modifier = Modifier
                 .size(96.dp, 96.dp)
                 .offset(-100.dp, -5.dp)
         )
         ZombiAnimation(
-            createZombiRandom(),
-            modifier = Modifier
+            createZombiRandom(), modifier = Modifier
                 .size(96.dp, 96.dp)
                 .offset(-125.dp, 0.dp)
         )

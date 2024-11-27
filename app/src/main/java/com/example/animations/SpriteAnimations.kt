@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.IntOffset
@@ -140,16 +142,16 @@ fun createZombiRandom(): CharacterViewModel {
 fun CharacterAnimation(characterController: CharacterViewModel) {
     val currentFrame by characterController.currentFrame.observeAsState(0)
 
+    // Hoja de sprites
     val spriteSheet = ImageBitmap.imageResource(R.drawable.char_main)
 
-    Log.d("SpriteAnimations", "currentFrame: $currentFrame")
-
+    // Dibujar el frame actual
     Box(
         modifier = Modifier.size(61.dp, 63.dp)
     ) {
         SpriteAnimationFromSheet(
             spriteSheet = spriteSheet,
-            size = 5,
+            scale = 6,
             frameWidth = 32,
             frameHeight = 32,
             row = characterController.animationRow(),
@@ -187,7 +189,7 @@ fun ZombiAnimation(
     ) {
         SpriteAnimationFromSheet(
             spriteSheet = spriteSheet,
-            size = 5,
+            scale = 5,
             frameWidth = 96,
             frameHeight = 97,
             row = 0,
@@ -203,7 +205,7 @@ fun ZombiAnimation(
 /**
  * Dibuja una animación de un sprite a partir de una hoja de sprites
  * @param spriteSheet hoja de sprites
- * @param size tamaño de la imagen
+ * @param scale tamaño de la imagen
  * @param frameWidth ancho de cada frame
  * @param frameHeight alto de cada frame
  * @param columns número de columnas en la hoja de sprites
@@ -214,7 +216,7 @@ fun ZombiAnimation(
 @Composable
 fun SpriteAnimationFromSheet(
     spriteSheet: ImageBitmap,
-    size: Int,
+    scale: Int,
     frameWidth: Int,
     frameHeight: Int,
     row: Int,
@@ -235,7 +237,14 @@ fun SpriteAnimationFromSheet(
             srcOffset = IntOffset(srcOffsetX, srcOffsetY),
             srcSize = IntSize(frameWidth, frameHeight),
             dstOffset = dstOffset,
-            dstSize = IntSize(frameWidth, frameHeight) * size
+            dstSize = IntSize(frameWidth, frameHeight) * scale
+        )
+
+        // Sombra del personaje
+        drawCircle(
+            color = Color(0, 0, 0, 50),
+            radius = 20f,
+            center = Offset(32f, 64f)
         )
     }
 }
