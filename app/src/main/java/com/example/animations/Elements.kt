@@ -30,33 +30,32 @@ fun ElementsPreview(){
 fun ElementoAnimado() {
 
     var modifier = Modifier
-        .width(200.dp)
-        .height(200.dp)
+        .width(250.dp)
+        .height(250.dp)
 
     LazyColumn {
-        Elementos.forEach {
-            when (it){
+        Elementos.forEach { element ->
+            when (element){
                 R.raw.fire -> item {
                     modifier = modifier
                     .padding(16.dp)
 
-                    LottieInfinit(it, modifier)
+                    LottieInfinit(element, modifier)
                 }
                 R.raw.planta -> item {
                     modifier = modifier
                         .scale(1.4f)
 
-                    LottieInfinit(it, modifier)
+                    LottieInfinit(element, modifier)
                 }
                 R.raw.aire -> item {
                     modifier = modifier
                         .padding(20.dp)
 
-                    LottieInfinit(it, modifier)
+                    LottieInfinit(element, modifier)
                 }
                 else -> item {
-
-                    LottieInfinit(it, modifier)
+                    LottieInfinit(element, modifier)
                 }
             }
         }
