@@ -79,3 +79,5 @@ fun LottieInfinite(@RawRes resId: Int, modifier: Modifier){
         progress = { progress },
     )
 }
+
+
