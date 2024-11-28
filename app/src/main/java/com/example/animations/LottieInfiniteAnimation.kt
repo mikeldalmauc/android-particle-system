@@ -40,7 +40,7 @@ fun RamaError(innerPadding: PaddingValues){
             .fillMaxSize()
         ) {
         Column {
-            LottieInfinit(R.raw.ramaerror, Modifier.scale(0.5f))
+            LottieInfinite(R.raw.ramaerror, Modifier.scale(0.5f))
         }
     }
 }
@@ -48,12 +48,12 @@ fun RamaError(innerPadding: PaddingValues){
 @Composable
 fun LottieLego(innerPadding: PaddingValues) {
     Box(modifier = Modifier.padding(innerPadding)) {
-        LottieInfinit(R.raw.lottie_lego)
+        LottieInfinite(R.raw.lottie_lego)
     }
 }
 
 @Composable
-fun LottieInfinit(@RawRes resId: Int){
+fun LottieInfinite(@RawRes resId: Int){
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(resId))
     val progress by animateLottieCompositionAsState(
         composition,
@@ -67,7 +67,7 @@ fun LottieInfinit(@RawRes resId: Int){
 
 
 @Composable
-fun LottieInfinit(@RawRes resId: Int, modifier: Modifier){
+fun LottieInfinite(@RawRes resId: Int, modifier: Modifier){
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(resId))
     val progress by animateLottieCompositionAsState(
         composition,
