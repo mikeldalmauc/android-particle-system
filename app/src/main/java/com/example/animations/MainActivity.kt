@@ -45,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.animations.ui.theme.AnimationsTheme
 import kotlinx.coroutines.launch
 
@@ -87,7 +88,8 @@ fun NavigationDrawer() {
                     "Watch",
                     "Confetti",
                     "Carrousel",
-                    "RamaError"
+                    "ErrorPage",
+                    "TextAnimation"
 
                 ).map { name ->
                     NavigationDrawerItem(label = { Text(text = name) },
@@ -142,7 +144,12 @@ fun NavigationDrawer() {
                 "Carrousel" ->
                     Carousel()
 
-                else -> RamaError(contentPadding)
+                "TextAnimation" ->
+                    TextAnimation()
+
+                else -> {
+                    ErrorPage(contentPadding)
+                }
             }
         }
     }
