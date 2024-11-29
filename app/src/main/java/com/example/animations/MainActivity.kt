@@ -86,7 +86,7 @@ fun NavigationDrawer() {
                     "BouncingBallAnimation",
                     "Watch",
                     "Confetti",
-                    "Elementos",
+                    "Carrousel",
                     "RamaError"
 
                 ).map { name ->
@@ -139,8 +139,8 @@ fun NavigationDrawer() {
 
                 "Confetti" -> Confeti()
 
-                "Elementos" ->
-                    ElementoAnimado()
+                "Carrousel" ->
+                    Carousel()
 
                 else -> RamaError(contentPadding)
             }
