@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.animations"
-        minSdk = 27
+        minSdk = 33
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -70,4 +70,8 @@ dependencies {
     implementation(libs.lottie.compose)
 
     implementation("com.airbnb.android:lottie-compose:6.6.0")
+
+    implementation("androidx.compose.ui:ui:1.5.0") // O la última versión
+    implementation("androidx.compose.ui:ui-graphics:1.5.0")
+
 }

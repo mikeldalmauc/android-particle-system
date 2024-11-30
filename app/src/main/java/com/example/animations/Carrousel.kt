@@ -308,7 +308,7 @@ fun CircularCarousel(
                             alpha = if (itemAngle < 90f || itemAngle > 270f) {
                                 1f - (abs(itemAngle - 180f) / 180f) * 0.02f
                             } else {
-                                if (abs(itemAngle - 180f) < 45)
+                                if (abs(itemAngle - 180f) < 65)
                                     abs(itemAngle - 180f) / 200f
                                 else
                                     0.4f

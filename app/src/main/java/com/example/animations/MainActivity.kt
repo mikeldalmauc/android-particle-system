@@ -62,9 +62,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
+@Composable
+fun Preview() {
+    AnimationsTheme {
+        NavigationDrawer()
+    }
+}
+
 @Composable
 fun NavigationDrawer() {
-    val item = remember { mutableStateOf("Character") }
+    val item = remember { mutableStateOf("Carrousel") }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -72,7 +80,7 @@ fun NavigationDrawer() {
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.fillMaxWidth(0.5f)
+                modifier = Modifier.fillMaxWidth(0.3f)
             ) {
                 Text("Ejemplos", modifier = Modifier.padding(16.dp))
                 HorizontalDivider()

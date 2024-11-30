@@ -20,21 +20,22 @@ val LightOcre = Color(0xD3F3D5A6)
 val Blue = Color(0xFF1129A2)
 val LightBlue = Color(0xFFDDEAE8)
 
-val Red = Color(0xFFBB0B1A)
-val LightRed = Color(0xFFE58484)
+val Red = Color(0xFF671405)
+val LightRed = Color(0xFFF1C69C)
 
-val Green = Color(0xFF02410F)
-val LightGreen = Color(0xFF6FE56F)
+val Green = Color(0xFF05330C)
+val LightGreen = Color(0xFF97C7AC)
 
-val Yellow = Color(0xFF544400)
-val LightYellow = Color(0xFFE8E851)
+val Yellow = Color(0xFF382D00)
+val LightYellow = Color(0xFFF6D5A7)
 val VeryLightYellow = Color(0xFFEFEFEF)
 
 val Gray = Color(0xFF333333)
+val MidGray = Color(0xFFADADAD)
 val LightGray = Color(0xFFE7E7E7)
 
 val Brown = Color(0xFF381805)
-val LightBrown = Color(0xFFDE9A57)
+val LightBrown = Color(0xFF9D8C81)
 
 fun fontColor(color: Color): Color {
     when(color){
