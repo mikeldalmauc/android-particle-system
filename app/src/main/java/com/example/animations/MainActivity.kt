@@ -46,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.animations.level.Level
 import com.example.animations.ui.theme.AnimationsTheme
 import kotlinx.coroutines.launch
 
@@ -98,7 +99,8 @@ fun NavigationDrawer() {
                     "Carrousel",
                     "ErrorPage",
                     "TextAnimation",
-                    "BackgroundsCarrousel"
+                    "BackgroundsCarrousel",
+                    "GameLevel"
 
                 ).map { name ->
                     NavigationDrawerItem(label = { Text(text = name) },
@@ -158,6 +160,9 @@ fun NavigationDrawer() {
 
                 "BackgroundsCarrousel" ->
                     MenuDeFondos()
+
+                "GameLevel" ->
+                    Level()
 
                 else -> {
                     ErrorPage(contentPadding)

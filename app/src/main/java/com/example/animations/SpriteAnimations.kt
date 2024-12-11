@@ -239,12 +239,5 @@ fun SpriteAnimationFromSheet(
             dstOffset = dstOffset,
             dstSize = IntSize(frameWidth, frameHeight) * scale
         )
-
-        // Sombra del personaje
-        drawCircle(
-            color = Color(0, 0, 0, 50),
-            radius = 20f,
-            center = Offset(32f, 64f)
-        )
     }
 }
