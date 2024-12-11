@@ -97,7 +97,8 @@ fun NavigationDrawer() {
                     "Confetti",
                     "Carrousel",
                     "ErrorPage",
-                    "TextAnimation"
+                    "TextAnimation",
+                    "BackgroundsCarrousel"
 
                 ).map { name ->
                     NavigationDrawerItem(label = { Text(text = name) },
@@ -154,6 +155,9 @@ fun NavigationDrawer() {
 
                 "TextAnimation" ->
                     TextAnimation()
+
+                "BackgroundsCarrousel" ->
+                    MenuDeFondos()
 
                 else -> {
                     ErrorPage(contentPadding)
